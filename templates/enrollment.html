@@ -1,0 +1,62 @@
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <h1 style="text-align: center; color: #2c3e50;">Manage Course Enrollments</h1>
+
+    <!-- Section for listing all courses -->
+    <div style="margin-bottom: 40px;">
+        <h2 style="color: #2980b9; font-size: 1.8em; text-align: center;">Your Managed Courses</h2>
+        {% if courses %}
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+                {% for course in courses %}
+                    <div style="background-color: #ecf0f1; margin: 15px; padding: 20px; border-radius: 8px; width: 45%; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        <h3 style="color: #3498db; font-size: 24px; margin-bottom: 10px;">{{ course.title }}</h3>
+                        <p><strong style="color: #34495e;">Lecturer:</strong> {{ course.lecturer.username }}</p>
+                        <p><strong style="color: #34495e;">Description:</strong> {{ course.description }}</p>
+                        <p><strong style="color: #34495e;">Enrolled Students:</strong> {{ course.students.count }}</p>
+                        <p><strong style="color: #34495e;">Created At:</strong> {{ course.created_at }}</p>
+                        <p><strong style="color: #34495e;">Last Updated:</strong> {{ course.updated_at }}</p>
+
+                        <a href="{% url 'users:course_details' course.id %}" style="background-color: #2ecc71; color: white; padding: 10px 20px; border-radius: 5px; cursor: pointer; text-decoration: none;">
+                            View Enrolled Students
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; font-size: 18px; color: #e74c3c;">No courses available to manage.</p>
+        {% endif %}
+    </div>
+
+    <!-- Section for enrolled students in a specific course -->
+    <div style="margin-top: 40px;">
+        <h2 style="color: #2980b9; font-size: 1.8em; text-align: center;">Enrolled Students Details</h2>
+        {% if course_details %}
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <table style="width: 80%; margin: 20px 0; border-collapse: collapse; text-align: left; border-radius: 8px; overflow: hidden;">
+                    <thead style="background-color: #3498db; color: white;">
+                        <tr>
+                            <th style="padding: 10px 20px;">Student Name</th>
+                            <th style="padding: 10px 20px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in course_details.students.all %}
+                            <tr style="background-color: #f9f9f9; border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px 20px;">{{ student.username }}</td>
+                                <td style="padding: 10px 20px;">
+                                    <form method="POST" action="{% url 'users:remove_student' course_details.id student.id %}" style="display: inline-block;">
+                                        {% csrf_token %}
+                                        <button type="submit" style="background-color: #e74c3c; color: white; padding: 5px 15px; border-radius: 5px; cursor: pointer; border: none;">
+                                            Remove
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p style="text-align: center; font-size: 18px; color: #e74c3c;">No students enrolled in this course.</p>
+        {% endif %}
+    </div>
+</div>

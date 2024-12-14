@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <!-- Role and Name of the Logged-in User -->
+            <div class="text-white">
+                <span>{{ user.username }}
+                    {% if user.role %}
+                        ({{ user.get_role_display }})
+                    {% else %}
+                        (No role assigned)
+                    {% endif %}
+                </span>
+            </div>
+
+            <!-- Menu Links -->
+            <div class="space-x-4">
+                <a href="{% url 'home' %}" class="text-white">Home</a>
+                <a href="{% url 'users:profile' %}" class="text-white">Profile</a>
+                <a href="{% url 'users:enrollment' %}" class="text-white">Enrollment</a>
+                <a href="{% url 'users:course' %}" class="text-white">Course</a>
+            </div>
+
+            <!-- Logout Button -->
+            <div>
+                <a href="{% url 'users:logout' %}" class="text-white bg-red-500 px-4 py-2 rounded">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Section -->
+    <div class="max-w-7xl mx-auto p-6">
+        {% block content %}
+        <!-- Default content if no specific block content is defined -->
+        {% endblock %}
+    </div>
+</body>
+</html>

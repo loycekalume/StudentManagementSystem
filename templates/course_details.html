@@ -1,0 +1,44 @@
+<div style="max-width: 800px; margin: 20px auto; padding: 20px; font-family: Arial, sans-serif;">
+    <!-- Course Title -->
+    <div style="background-color: #f5f5f5; padding: 30px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <h1 style="text-align: center; color: #34495e; margin-bottom: 20px;">{{ course.title }}</h1>
+        <p style="font-size: 1.2em; color: #2c3e50; line-height: 1.6; text-align: center;">
+            <strong>Lecturer:</strong> {{ course.lecturer.username }}
+        </p>
+        <p style="font-size: 1.1em; color: #7f8c8d; line-height: 1.6; margin-top: 10px;">
+            <strong>Description:</strong> {{ course.description }}
+        </p>
+    </div>
+
+    <!-- Enrolled Students -->
+    <div style="margin-top: 40px;">
+        <h2 style="text-align: center; color: #2980b9; margin-bottom: 20px;">Enrolled Students</h2>
+        {% if students %}
+            <table style="width: 100%; border-collapse: collapse; margin: 0 auto; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                <thead>
+                    <tr style="background-color: #3498db; color: white; text-align: left;">
+                        <th style="padding: 15px; font-size: 1.1em;">Student Name</th>
+                        <th style="padding: 15px; font-size: 1.1em;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr style="background-color: #f9f9f9; border-bottom: 1px solid #ddd;">
+                            <td style="padding: 15px; font-size: 1em; color: #34495e;">{{ student.username }}</td>
+                            <td style="padding: 15px;">
+                                <form method="POST" action="{% url 'users:remove_student' course.id student.id %}" style="display: inline-block;">
+                                    {% csrf_token %}
+                                    <button type="submit" style="background-color: #e74c3c; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; border: none; font-size: 0.9em;">
+                                        Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="text-align: center; font-size: 1.1em; color: #e74c3c; margin-top: 20px;">No students are enrolled in this course.</p>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+    <div class="text-white">
+        <span>
+            Welcome, {{ user.username }}
+            {% if role == 'lecturers' %}
+                (Hello Lecturer)
+            {% elif role == 'students' %}
+                (Hello Student)
+            {% endif %}
+        </span>
+    </div>
+
+    <h2 class="text-3xl font-semibold mt-6">
+        {% if role == 'lecturers' %}
+            Lecturer's Section
+        {% elif role == 'students' %}
+            Student's Section
+        {% endif %}
+    </h2>
+
+    {% if role == 'lecturers' %}
+        <div class="mt-6">
+            <a href="{% url 'users:create_announcement' %}" class="text-blue-500 hover:underline">Create a New Announcement</a>
+        </div>
+    {% endif %}
+
+    <h3 class="text-2xl font-medium mt-6">Announcements:</h3>
+    <ul class="space-y-4">
+        {% for announcement in announcements %}
+            <li class="bg-white shadow-md p-4 rounded-lg hover:bg-blue-50">
+                <strong class="text-xl text-teal-600">{{ announcement.title }}</strong>
+                <p class="text-gray-700 mt-2">{{ announcement.content }}</p>
+                <small class="text-sm text-gray-500">
+                    Created by: {{ announcement.creator.username }} on {{ announcement.created_at|date:"F d, Y H:i" }}
+                </small>
+
+                {% if role == 'lecturers' %}
+                    <div class="mt-2">
+                        <a href="{% url 'users:edit_announcement' announcement.id %}" class="text-blue-600 hover:underline">Edit</a> |
+                        <a href="{% url 'users:delete_announcement' announcement.id %}" class="text-red-600 hover:underline">Delete</a>
+                    </div>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li class="text-gray-500 text-center py-4">No announcements available.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

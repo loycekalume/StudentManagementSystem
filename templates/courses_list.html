@@ -1,0 +1,7 @@
+<!-- Display the list of courses -->
+<h1>Courses List</h1>
+<ul>
+    {% for course in courses %}
+        <li>{{ course.title }}</li>
+    {% endfor %}
+</ul>

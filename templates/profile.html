@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+    <div style="max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); font-family: Arial, sans-serif;">
+        <h1 style="font-size: 2.5rem; font-weight: bold; color: #333; margin-bottom: 20px;">Profile of {{ user.username }}</h1>
+
+        <div style="margin-bottom: 15px; padding: 15px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);"> 
+            <strong style="font-size: 1.2rem; color: #333;">Role:</strong>
+            <p style="font-size: 1.1rem; color: #555;">{{ role }}</p>
+        </div>
+
+        <div style="margin-bottom: 15px; padding: 15px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+            <strong style="font-size: 1.2rem; color: #333;">Date Registered:</strong>
+            <p style="font-size: 1.1rem; color: #555;">{{ date_joined }}</p>
+        </div>
+
+        <div style="margin-bottom: 15px; padding: 15px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+            <strong style="font-size: 1.2rem; color: #333;">Last Login:</strong>
+            <p style="font-size: 1.1rem; color: #555;">{{ last_login }}</p>
+        </div>
+
+        <a href="{% url 'home' %}" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; font-size: 1.1rem; text-decoration: none; border-radius: 5px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s;">
+            Back to Dashboard
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Courses - My Website{% endblock %}
+
+{% block content %}
+    <h1 style="text-align:center; color: #4CAF50; font-size: 2.5em; margin-bottom: 20px;">Available Courses</h1>
+
+    <a href="{% url 'users:add_course' %}" class="btn btn-primary" 
+       style="background-color: #4CAF50; color: white; padding: 12px 24px; font-size: 1.1em; border-radius: 5px; text-decoration: none; display: inline-block; margin-bottom: 20px; transition: all 0.3s;">
+        Add Course
+    </a>
+
+    <div class="course-list" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        {% if courses %}
+            <ul style="list-style-type: none; padding: 0;">
+                {% for course in courses %}
+                    <li style="background-color: #f9f9f9; border: 1px solid #ddd; margin-bottom: 20px; border-radius: 8px; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <h3 style="font-size: 1.8em; color: #333; margin-bottom: 10px; text-transform: capitalize;">{{ course.title }}</h3>
+                        <p style="font-size: 1.1em; color: #555; margin: 5px 0;"><strong>Lecturer:</strong> {{ course.lecturer.username }}</p>
+                        <p style="font-size: 1.1em; color: #555; margin: 5px 0;"><strong>Description:</strong> {{ course.description }}</p>
+                        <p style="font-size: 1.1em; color: #555; margin: 5px 0;"><strong>Enrolled Students:</strong> {{ course.students.count }}</p>
+                        <p style="font-size: 1.1em; color: #555; margin: 5px 0;"><strong>Created At:</strong> {{ course.created_at }}</p>
+                        <p style="font-size: 1.1em; color: #555; margin: 5px 0;"><strong>Last Updated:</strong> {{ course.updated_at }}</p>
+
+                        <div style="margin-top: 20px;">
+                            <!-- Edit and Delete buttons -->
+                            {# <a href="{% url 'users:edit_course' course.pk %}" class="btn btn-warning" style="background-color: #ffa500; color: white; padding: 10px 20px; font-size: 1em; border-radius: 5px; text-decoration: none; transition: all 0.3s;">Edit</a> | #}
+                            <a href="{% url 'users:delete_course' course.pk %}" onclick="return confirm('Are you sure?')" class="btn btn-danger" 
+                               style="background-color: #e74c3c; color: white; padding: 10px 20px; font-size: 1em; border-radius: 5px; text-decoration: none; transition: all 0.3s; display: inline-block;">
+                                Delete
+                            </a>
+
+                            <!-- Enroll and Unenroll buttons -->
+                            {% if user not in course.students.all %}
+                                <!-- If the user is not enrolled, show the enroll button -->
+                                <form method="POST" action="{% url 'users:enroll_in_course' course.pk %}" style="display: inline-block; margin-left: 10px;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-success" 
+                                            style="background-color: #28a745; color: white; padding: 10px 20px; font-size: 1.1em; border-radius: 5px; border: none; transition: all 0.3s;">
+                                        Enroll
+                                    </button>
+                                </form>
+                            {% else %}
+                                <!-- If the user is already enrolled, show the unenroll button -->
+                                <form method="POST" action="{% url 'users:unenroll_from_course' course.pk %}" style="display: inline-block; margin-left: 10px;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger" 
+                                            style="background-color: #dc3545; color: white; padding: 10px 20px; font-size: 1.1em; border-radius: 5px; border: none; transition: all 0.3s;">
+                                        Unenroll
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="text-align: center; font-size: 1.2em; color: #888;">No courses available at the moment.</p>
+        {% endif %}
+    </div>
+{% endblock %}

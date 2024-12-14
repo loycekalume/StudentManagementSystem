@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Course{% endblock %}
+
+{% block content %}
+    <h1>Add New Course</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Display the form fields -->
+        <button type="submit" class="btn btn-success">Save Course</button>
+    </form>
+    <div>
+    {% if messages %}
+    <div class="alert alert-success" role="alert">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
+
+    </div>
+{% endblock %}
